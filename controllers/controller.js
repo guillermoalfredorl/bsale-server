@@ -16,7 +16,7 @@ connection.connect();
 function searchProducts(req, res) {
     let sql = "SELECT * FROM product"
     let sql_;
-    let product = req.query.name
+    // let product = req.query.name
     // let price = req.query.price
     let category = req.query.category
     let page = req.query.page
@@ -49,8 +49,8 @@ function searchProducts(req, res) {
             return res.status(404).send("Hubo un error en la consulta")
         }
         connection.query(sql_, function (error_, result_, field_) {
-            if (error) {
-                console.log("Hubo un error en la consulta", error.message)
+            if (error_) {
+                console.log("Hubo un error en la consulta", error_.message)
                 return res.status(404).send("Hubo un error en la consulta")
             }
 
