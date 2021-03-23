@@ -1,23 +1,9 @@
-require('dotenv').config()
-
-var mysql = require('mysql')
-
-var pool = mysql.createPool({
-    host: process.env.HOST,
-    port: process.env.PORT_DB,
-    user: process.env.USER,
-    password: process.env.PASSWORD_DB,
-    database: process.env.DATABASE
-})
-
-// connection.connect();
-
+const pool = require('../conectionDB/conectionDB')
 
 function searchProducts(req, res) {
     let sql = "SELECT * FROM product"
     let sql_;
     let name = req.query.name
-    // let price = req.query.price
     let category = req.query.category
     let page = req.query.page
     let quantity = req.query.quantity
