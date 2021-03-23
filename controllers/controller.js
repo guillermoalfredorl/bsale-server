@@ -2,7 +2,7 @@ require('dotenv').config()
 
 var mysql = require('mysql')
 
-var connection = mysql.createConnection({
+var pool = mysql.createPool({
     host: process.env.HOST,
     port: process.env.PORT_DB,
     user: process.env.USER,
@@ -10,13 +10,13 @@ var connection = mysql.createConnection({
     database: process.env.DATABASE
 })
 
-connection.connect();
+// connection.connect();
 
 
 function searchProducts(req, res) {
     let sql = "SELECT * FROM product"
     let sql_;
-    // let product = req.query.name
+    let name = req.query.name
     // let price = req.query.price
     let category = req.query.category
     let page = req.query.page
@@ -24,12 +24,14 @@ function searchProducts(req, res) {
     let order = req.query.order
     let total;
 
-    /* if (product) {
-        console.log(`product: ${product}`)
-        sql += ` WHERE name LIKE \'\%${product}\%\'`
-    } */
 
-    if (category) {
+    if (name && category) {
+        console.log(`name: ${name}`)
+        sql += ` WHERE name LIKE \'\%${name}\%\' AND category = ${category}`
+    } else if (name) {
+        console.log(`name: ${name}`)
+        sql += ` WHERE name LIKE \'\%${name}\%\'`
+    } else if (category) {
         sql += ` WHERE category = ${category}`
     }
 
@@ -43,12 +45,12 @@ function searchProducts(req, res) {
 
     sql += ` LIMIT ${(page - 1) * quantity}, ${quantity}`
 
-    connection.query(sql, function (error, result, fields) {
+    pool.query(sql, function (error, result, fields) {
         if (error) {
             console.log("Hubo un error en la consulta", error.message)
             return res.status(404).send("Hubo un error en la consulta")
         }
-        connection.query(sql_, function (error_, result_, field_) {
+        pool.query(sql_, function (error_, result_, field_) {
             if (error_) {
                 console.log("Hubo un error en la consulta", error_.message)
                 return res.status(404).send("Hubo un error en la consulta")
@@ -70,7 +72,7 @@ function searchProducts(req, res) {
 function searchCategory(req, res) {
     let sql = "SELECT * FROM category"
 
-    connection.query(sql, function (error, result, fields) {
+    pool.query(sql, function (error, result, fields) {
         if (error) {
             console.log("Hubo un error en la consulta", error.message)
             return res.status(404).send("Hubo un error en la consulta")

@@ -10,6 +10,4 @@ var connection = mysql.createConnection({
     database: process.env.DATABASE
 })
 
-module.exports = {
-    connection: connection
-}
+module.exports; connection
