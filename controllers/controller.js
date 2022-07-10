@@ -1,6 +1,6 @@
 const pool = require('../conectionDB/conectionDB')
 
-function searchProducts(req, res) {
+const searchProducts = (req, res) => {
     let sql = "SELECT * FROM product"
     let sql_;
     let name = req.query.name
@@ -12,10 +12,8 @@ function searchProducts(req, res) {
 
 
     if (name && category) {
-        console.log(`name: ${name}`)
         sql += ` WHERE name LIKE \'\%${name}\%\' AND category = ${category}`
     } else if (name) {
-        console.log(`name: ${name}`)
         sql += ` WHERE name LIKE \'\%${name}\%\'`
     } else if (category) {
         sql += ` WHERE category = ${category}`
@@ -33,18 +31,16 @@ function searchProducts(req, res) {
 
     pool.query(sql, function (error, result, fields) {
         if (error) {
-            console.log("Hubo un error en la consulta", error.message)
             return res.status(404).send("Hubo un error en la consulta")
         }
         pool.query(sql_, function (error_, result_, field_) {
             if (error_) {
-                console.log("Hubo un error en la consulta", error_.message)
                 return res.status(404).send("Hubo un error en la consulta")
             }
 
             total = result_.length
 
-            var response = {
+            let response = {
                 products: result,
                 total: total
             }
@@ -55,16 +51,15 @@ function searchProducts(req, res) {
 }
 
 
-function searchCategory(req, res) {
+const searchCategory = (req, res) => {
     let sql = "SELECT * FROM category"
 
     pool.query(sql, function (error, result, fields) {
         if (error) {
-            console.log("Hubo un error en la consulta", error.message)
             return res.status(404).send("Hubo un error en la consulta")
         }
 
-        var response = {
+        let response = {
             category: result
         }
 
@@ -75,6 +70,6 @@ function searchCategory(req, res) {
 
 
 module.exports = {
-    searchCategory: searchCategory,
-    searchProducts: searchProducts
+    searchCategory,
+    searchProducts
 }
