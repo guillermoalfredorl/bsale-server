@@ -1,8 +1,8 @@
 require('dotenv').config()
 
-var mysql = require('mysql')
+const mysql = require('mysql')
 
-var pool = mysql.createPool({
+const pool = mysql.createPool({
     host: process.env.HOST,
     port: process.env.PORT_DB,
     user: process.env.USER,
