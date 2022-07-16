@@ -1,24 +1,39 @@
-const express = require("express")
-const cors = require("cors")
+import './config/env.js';
+import httpServer from './config/http.js';
 
-const controller = require("./controllers/controller.js")
+const bootstrap = () => {
+  httpServer.listen(process.env.PORT_DB, () => {
+    console.log(`listening on port ${process.env.PORT_DB}`);
+  });
+};
 
-const app = express()
+bootstrap();
 
-app.use(cors())
+/* const express = require('express');
+const cors = require('cors');
 
-app.use(express.urlencoded({
-    extended: true
-})
-)
+const controller = require('./controllers/controller.js');
 
-app.use(express.json())
+const { searchCategory, searchProducts } = controller;
 
-app.get("/category", controller.searchCategory)
-app.get("/products", controller.searchProducts)
+const expressApp = express();
 
-const port = process.env.PORT || 5000
+expressApp.use(cors());
 
-app.listen(port, () => {
-    console.log("listen on port " + port)
-})
+expressApp.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+expressApp.use(express.json());
+
+expressApp.get('/category', searchCategory);
+expressApp.get('/products', searchProducts);
+
+const port = process.env.PORT || 5000;
+
+expressApp.listen(port, () => {
+  console.log('listen on port ' + port);
+});
+ */
