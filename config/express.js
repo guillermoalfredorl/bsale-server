@@ -5,6 +5,7 @@ import productRouter from '../routes/product.routes.js';
 const expressApp = express();
 
 //Middlewares
+expressApp.use(express.json());
 expressApp.use(cors());
 
 expressApp.use(
@@ -13,9 +14,7 @@ expressApp.use(
   })
 );
 
-expressApp.use(express.json());
-
 //Routes
-expressApp.use('/products', productRouter);
+expressApp.use('/product', productRouter);
 
 export default expressApp;
